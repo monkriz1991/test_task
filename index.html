@@ -9,23 +9,23 @@ if (!isset($_SESSION)){session_start();$id_user=$_SESSION['id'];}else{}
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-	<meta name="referrer" content="origin">
-	<meta name="resource-type" content="Document" />
-	<meta name="document-state" content="Dynamic" />
-	<meta name="robots" content="ALL" />
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<meta name="referrer" content="origin">
+<meta name="resource-type" content="Document" />
+<meta name="document-state" content="Dynamic" />
+<meta name="robots" content="ALL" />
 
-	<link rel="icon"  href="" type="image/png">
-	<link rel="shortcut icon" href="" type="image/png">
+<link rel="icon"  href="" type="image/png">
+<link rel="shortcut icon" href="" type="image/png">
 
-	<title>Tasks</title>
-	<link href="../css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
-	<link href="../css/bootstrap-multiselect.css" rel="stylesheet" type="text/css"/>
-	<link href="../css/style.css?t=<?php echo(microtime(true)); ?>" rel="stylesheet" type="text/css" media="all" />
-	<link href="../css/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" media="all"/>
-	<link href="../css/awesome/all.css" rel="stylesheet" type="text/css" media="all"/>
+<title>Tasks</title>
+<link href="../css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+<link href="../css/bootstrap-multiselect.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css?t=<?php echo(microtime(true)); ?>" rel="stylesheet" type="text/css" media="all" />
+<link href="../css/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" media="all"/>
+<link href="../css/awesome/all.css" rel="stylesheet" type="text/css" media="all"/>
 
 </head>
 <body>
@@ -48,7 +48,6 @@ if (!isset($_SESSION)){session_start();$id_user=$_SESSION['id'];}else{}
 			</div>
 		</div>
 	</header>
-
 	<section>
 		<div class="container">
 			<h1>Планировщик задач</h1>
@@ -65,32 +64,32 @@ if (!isset($_SESSION)){session_start();$id_user=$_SESSION['id'];}else{}
 				<div class="content-nav fl-left">
 					<strong>Сортировка</strong>
 					<div class="content-block fl-left">
-	                   <div class="form-group">
-	                        <div class="b-form-row">
-	                            <select id="email_checked" name="email_checked" multiple > 
-	                            	<?php
-	                            		$sql_email = "select email from users group by email"; 
-	                            		$res_email = mysqli_query($db_connect,$sql_email);                      
-										while($row_email = mysqli_fetch_array($res_email)){
-	                            	?>
-	                                	<option  value="<?php echo $row_email['email'];?>"><?php echo $row_email['email'];?></option>
-	                                <?php } ?>
-	                            </select>
-	                        </div>                                
-	                    </div> 
-	                   <div class="form-group">
-	                        <div class="b-form-row">
-	                            <select id="name_checked" name="name_checked" multiple > 
-	                            	<?php
-	                            		$sql_email = "select name from users group by name"; 
-	                            		$res_email = mysqli_query($db_connect,$sql_email);                      
-										while($row_email = mysqli_fetch_array($res_email)){
-	                            	?>
-	                                	<option  value="<?php echo $row_email['name'];?>"><?php echo $row_email['name'];?></option>
-	                                <?php } ?>
-	                            </select>
-	                        </div>                                
-	                    </div>
+						<div class="form-group">
+						<div class="b-form-row">
+						    <select id="email_checked" name="email_checked" multiple > 
+							<?php
+								$sql_email = "select email from users group by email"; 
+								$res_email = mysqli_query($db_connect,$sql_email);                      
+								while($row_email = mysqli_fetch_array($res_email)){
+							?>
+								<option  value="<?php echo $row_email['email'];?>"><?php echo $row_email['email'];?></option>
+							<?php } ?>
+						    </select>
+						</div>                                
+						</div> 
+						<div class="form-group">
+						<div class="b-form-row">
+						    <select id="name_checked" name="name_checked" multiple > 
+							<?php
+								$sql_email = "select name from users group by name"; 
+								$res_email = mysqli_query($db_connect,$sql_email);                      
+								while($row_email = mysqli_fetch_array($res_email)){
+							?>
+								<option  value="<?php echo $row_email['name'];?>"><?php echo $row_email['name'];?></option>
+							<?php } ?>
+						    </select>
+						</div>                                
+						</div>
 						<div class="content-nav-status fl-left">
 							<label class="checkbox-label">
 								<input class="checkbox_status" type="checkbox" name="status" value="new"  onclick="filter_users('')">
@@ -113,7 +112,6 @@ if (!isset($_SESSION)){session_start();$id_user=$_SESSION['id'];}else{}
 		</div>		
 	</section>
 
-
 	<?php include 'templates/modal.html';?>
 
 	<footer>
@@ -126,15 +124,13 @@ if (!isset($_SESSION)){session_start();$id_user=$_SESSION['id'];}else{}
 		</div>
 	</footer>
 
-	<script src="../js/jquery-3.2.1.min.js"></script>
-	<script src="../js/bootstrap.min.js"></script>
-	<script src="../js/bootstrap-multiselect.js"></script>
-	<script src="../js/sweetalert/sweetalert.min.js"></script>
-	<script src="../js/sweetalert/jquery.sweet-alert.custom.js"></script>
-
+<script src="../js/jquery-3.2.1.min.js"></script>
+<script src="../js/bootstrap.min.js"></script>
+<script src="../js/bootstrap-multiselect.js"></script>
+<script src="../js/sweetalert/sweetalert.min.js"></script>
+<script src="../js/sweetalert/jquery.sweet-alert.custom.js"></script>
 
 <script>
-
 $('#email_checked').multiselect({
 	numberDisplayed: 2,
 	nSelectedText: 'Выбрано',
@@ -146,7 +142,6 @@ $('#name_checked').multiselect({
 	nSelectedText: 'Выбрано',
 	nonSelectedText: 'Укажите имя',
 });
-
 </script>
 
 <script>
@@ -200,7 +195,6 @@ function show_content(status,email,name,page){
 }
 show_content();
 </script>
-
 <script>
     function add_tasks() {
 
@@ -292,8 +286,6 @@ show_content();
 		});
 	});
 </script>
-
-
 <script>
 	$(document).on('click','.edit-tasks',function(){
 		let id_tasks = $(this).attr('data-id');
@@ -323,11 +315,7 @@ show_content();
 		});
 
 	});			
-
 </script>
-
-
-
 
 </body>
 </html>
