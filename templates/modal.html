@@ -1,0 +1,63 @@
+
+		<div class="modal fade" id="add-tasks" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-primary" role="document">
+		        <div class="modal-content">
+		        	<strong>Добавление задачи</strong>
+		            <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close">
+		                <span aria-hidden="true">×</span>
+		            </button>  
+					<div class="modal-tasks-body">
+						<form method="POST" id="form-add-tasks" action="javascript:void(null);" onsubmit="add_tasks()">
+							<div class="form-input">
+								<label>
+									<input type="text" name="name" placeholder="Введите имя">
+								</label>
+							</div>
+							<div class="form-input">
+								<label>
+									<input type="text" name="email" placeholder="Введите email">
+								</label>
+							</div>
+							<div class="form-input">
+								<label>
+									<textarea name="text" placeholder="Описание"></textarea>
+								</label>
+							</div>
+							<div class="form-input">
+								<button type="submit" name="submit">Отправить</button>
+							</div>
+						</form>
+					</div>
+		        </div>
+		    </div>
+		</div>
+
+		<div class="modal fade" id="login" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog modal-primary" role="document">
+		        <div class="modal-content">
+		        	<strong>Вход</strong>
+		            <button type="button" class="close-modal" data-dismiss="modal" aria-label="Close">
+		                <span aria-hidden="true">×</span>
+		            </button>  
+					<div class="modal-tasks-body">
+						<form method="POST" id="form-login" action="javascript:void(null);" onsubmit="login_cell()">
+							<div class="form-input">
+								<label>
+									<input type="text" name="login" placeholder="Введите имя">
+								</label>
+							</div>
+							<div class="form-input">
+								<label>
+									<input type="password" name="password" placeholder="Введите пароль">
+								</label>
+							</div>
+							<div class="form-input">
+								<button type="submit" name="submit">Войти</button>
+							</div>
+						</form>
+					</div>
+		        </div>
+		    </div>
+		</div>
+
+

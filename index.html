@@ -1,0 +1,333 @@
+<?php
+
+include 'assets/config.php';
+include 'assets/db.php';
+
+if (!isset($_SESSION)){session_start();$id_user=$_SESSION['id'];}else{}
+
+?>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+	<meta name="referrer" content="origin">
+	<meta name="resource-type" content="Document" />
+	<meta name="document-state" content="Dynamic" />
+	<meta name="robots" content="ALL" />
+
+	<link rel="icon"  href="" type="image/png">
+	<link rel="shortcut icon" href="" type="image/png">
+
+	<title>Tasks</title>
+	<link href="../css/bootstrap.css" rel="stylesheet" type="text/css" media="all" />
+	<link href="../css/bootstrap-multiselect.css" rel="stylesheet" type="text/css"/>
+	<link href="../css/style.css?t=<?php echo(microtime(true)); ?>" rel="stylesheet" type="text/css" media="all" />
+	<link href="../css/sweetalert/sweetalert.css" rel="stylesheet" type="text/css" media="all"/>
+	<link href="../css/awesome/all.css" rel="stylesheet" type="text/css" media="all"/>
+
+</head>
+<body>
+	<header>
+		<div class="header">
+			<div class="container">	
+				<div class="logo">
+					<a href="index.html">
+						<strong>Tasks</strong>
+					</a>
+				</div>
+				<div class="header-right">
+					<?php if($id_user==''){?>
+						<a href="" data-toggle="modal" data-target="#login">Admin</a>
+					<?php }else{ ?>
+						<a href="assets/logout.php">Выход</a>
+					<?php } ?>
+				</div>
+			<div class="clearfix"></div>
+			</div>
+		</div>
+	</header>
+
+	<section>
+		<div class="container">
+			<h1>Планировщик задач</h1>
+			<div class="add-tasks fl-left">
+				<div class="add-tasks-block fl-left">
+					<strong>Вы можете создать свою задачу</strong>
+					<button data-toggle="modal" data-target="#add-tasks">
+						<strong>Создать задачу</strong>
+						<i class="fal fa-layer-plus"></i>
+					</button>
+				</div>
+			</div>
+			<div class="content fl-left">
+				<div class="content-nav fl-left">
+					<strong>Сортировка</strong>
+					<div class="content-block fl-left">
+	                   <div class="form-group">
+	                        <div class="b-form-row">
+	                            <select id="email_checked" name="email_checked" multiple > 
+	                            	<?php
+	                            		$sql_email = "select email from users group by email"; 
+	                            		$res_email = mysqli_query($db_connect,$sql_email);                      
+										while($row_email = mysqli_fetch_array($res_email)){
+	                            	?>
+	                                	<option  value="<?php echo $row_email['email'];?>"><?php echo $row_email['email'];?></option>
+	                                <?php } ?>
+	                            </select>
+	                        </div>                                
+	                    </div> 
+	                   <div class="form-group">
+	                        <div class="b-form-row">
+	                            <select id="name_checked" name="name_checked" multiple > 
+	                            	<?php
+	                            		$sql_email = "select name from users group by name"; 
+	                            		$res_email = mysqli_query($db_connect,$sql_email);                      
+										while($row_email = mysqli_fetch_array($res_email)){
+	                            	?>
+	                                	<option  value="<?php echo $row_email['name'];?>"><?php echo $row_email['name'];?></option>
+	                                <?php } ?>
+	                            </select>
+	                        </div>                                
+	                    </div>
+						<div class="content-nav-status fl-left">
+							<label class="checkbox-label">
+								<input class="checkbox_status" type="checkbox" name="status" value="new"  onclick="filter_users('')">
+								<span class="checkbox-custom"></span>
+								<span class="label">Новые</span>
+							</label>
+							<label class="checkbox-label">
+								<input class="checkbox_status" type="checkbox" name="status" value="closed"  onclick="filter_users('')">
+								<span class="checkbox-custom"></span>
+								<span class="label">Закрытые</span>
+							</label>
+						</div>
+					</div>
+				</div>
+				<div class="content-list fl-left" id="content">
+
+				</div>
+			</div>
+		<div class="clearfix"></div>
+		</div>		
+	</section>
+
+
+	<?php include 'templates/modal.html';?>
+
+	<footer>
+		<div class="footer" >
+			<div class="container">
+				<div class="footer-top" >
+
+				</div>	
+			</div>
+		</div>
+	</footer>
+
+	<script src="../js/jquery-3.2.1.min.js"></script>
+	<script src="../js/bootstrap.min.js"></script>
+	<script src="../js/bootstrap-multiselect.js"></script>
+	<script src="../js/sweetalert/sweetalert.min.js"></script>
+	<script src="../js/sweetalert/jquery.sweet-alert.custom.js"></script>
+
+
+<script>
+
+$('#email_checked').multiselect({
+	numberDisplayed: 2,
+	nSelectedText: 'Выбрано',
+	nonSelectedText: 'Укажите email',
+});
+
+$('#name_checked').multiselect({
+	numberDisplayed: 2,
+	nSelectedText: 'Выбрано',
+	nonSelectedText: 'Укажите имя',
+});
+
+</script>
+
+<script>
+$('#email_checked').on('change',function(){
+	filter_users();
+});
+
+$('#name_checked').on('change',function(){
+	filter_users();
+});
+
+function filter_users(page){
+
+	let status = [];
+	$('.checkbox_status[name="status"]:checked').each(function(){
+		status.push($(this).val())
+	});
+
+	let email = $('#email_checked').val();
+	let name = $('#name_checked').val();
+
+	show_content(status,email,name,page)
+
+}
+
+function new_page(text){
+
+	let page = $(text).attr('data-pages');
+	filter_users(page)
+}
+
+function show_content(status,email,name,page){
+
+	let data_filter = ({status:status,email:email,name:name});
+	data_filter = JSON.stringify(data_filter);
+	console.log(page)
+	$.ajax({
+		url:'templates/content.php',
+		global: false,
+		type:'POST',
+		data: {data_filter:data_filter,page:page},
+		dataType: "html",
+		async:false,
+		success:function(data){
+		  $("#content").html(data);
+
+		},
+		error: function(data) {
+		}
+	});  
+}
+show_content();
+</script>
+
+<script>
+    function add_tasks() {
+
+      var data_form   = $('#form-add-tasks').serialize();
+
+        $.ajax({
+          type: 'POST',
+          url: '../add_tasks.php',
+          data: data_form,
+          success: function(data) {
+
+           var result = JSON.parse(data);
+
+            if (result['status'] === 'ok'){
+            	console.log(result['text'])
+				swal({
+					title: "Задание успешно отправлено!",
+					//text: "",
+					icon: "success",
+					buttons: true,
+					dangerMode: true,
+					buttons: ["Создать ещё!", "К списку"],
+				})
+				.then((willDelete) => {
+				  if (willDelete) {
+				  	$('#add-tasks').modal('hide');
+				  	$('#form-add-tasks').trigger('reset');
+				  	filter_users();
+				  }
+				});
+
+            }
+           
+          },
+        error:  function(xhr, str){
+        	alert('Возникла ошибка: ' + xhr.responseCode);
+          }
+        });
+ 
+    }	
+</script>
+<script>
+    function login_cell() {
+
+      var data_form   = $('#form-login').serialize();
+
+        $.ajax({
+          type: 'POST',
+          url: 'assets/login.php',
+          data: data_form,
+          success: function(data) {
+
+           var result = JSON.parse(data);
+
+            if (result['status'] === 'ok'){
+
+            	if (result['text']=='ok') {
+            		location.reload();
+            	}else{
+            		alert(result['text']);
+            	}
+            }
+           
+          },
+        error:  function(xhr, str){
+        	alert('Возникла ошибка: ' + xhr.responseCode);
+          }
+        });
+ 
+    }	
+</script>	
+<script>
+	$(document).on('click','.close_tasks',function(){
+		let id_tasks = $(this).attr('data-id');
+		$.ajax({
+		  type: 'POST',
+		  url: 'assets/tasks_closed.php',
+		  data: {id_tasks:id_tasks},
+		  success: function(data) {
+		   var result = JSON.parse(data);
+		    if (result['status'] === 'ok'){
+		    	$('.tasks-status[data-id="'+id_tasks+'"]').html('closed').addClass('tasks-closed');
+		    	$('.close_tasks[data-id="'+id_tasks+'"]').remove();
+		    }
+		  },
+		error:  function(xhr, str){
+			alert('Возникла ошибка: ' + xhr.responseCode);
+		  }
+		});
+	});
+</script>
+
+
+<script>
+	$(document).on('click','.edit-tasks',function(){
+		let id_tasks = $(this).attr('data-id');
+		$('.edit-tasks[data-id="'+id_tasks+'"]>textarea').prop("disabled", false);
+		$('.edit-tasks[data-id="'+id_tasks+'"]>.fa-spell-check').addClass('dis_block');
+	});
+
+	$(document).on('click','.fa-spell-check',function(){
+		let id_tasks = $(this).attr('data-id');
+		let new_text = $('.edit-tasks[data-id="'+id_tasks+'"]>textarea').val();
+
+		$.ajax({
+		  type: 'POST',
+		  url: 'assets/tasks_edit.php',
+		  data: {id_tasks:id_tasks,new_text:new_text},
+		  success: function(data) {
+		   var result = JSON.parse(data);
+		    if (result['status'] === 'ok'){
+		    	console.log(result['text'])
+		    	$('.edit-tasks[data-id="'+id_tasks+'"]>textarea').prop("disabled", true);
+		    	$('.edit-tasks[data-id="'+id_tasks+'"]>.fa-spell-check').removeClass('dis_block');
+		    }
+		  },
+		error:  function(xhr, str){
+			alert('Возникла ошибка: ' + xhr.responseCode);
+		  }
+		});
+
+	});			
+
+</script>
+
+
+
+
+</body>
+</html>
