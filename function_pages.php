@@ -21,7 +21,7 @@ function myForeach($data_filter){
         	 }
 				
         }
-    }else{echo 'Объект не является массивом'; }
+    }else{echo 'error'; }
 
 	    if (!empty($nameString)) {
 	    	$nameString = substr($nameString, 3);
